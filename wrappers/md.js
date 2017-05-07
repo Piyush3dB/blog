@@ -38,7 +38,11 @@ class MarkdownWrapper extends React.Component {
       </div>
     )
   }
-  componentDidMount() {
+
+  componentDidMount()  { this.queueToMathjaxHub(); }
+  componentDidUpdate() { this.queueToMathjaxHub(); }
+
+  queueToMathjaxHub(){
       MathJax.Hub.Config({
         TeX: {
           equationNumbers: {
@@ -49,26 +53,19 @@ class MarkdownWrapper extends React.Component {
           inlineMath: [ ['$','$'], ['\(', '\)'] ],
           displayMath: [ ['$$','$$'] ],
           processEscapes: true,
+          useLabelIds: true,
+          startNumber: 0
         }
       });
-      MathJax.Hub.Queue(['Typeset', MathJax.Hub])
+      MathJax.Hub.Queue(
+        ["Typeset", MathJax.Hub],
+        ["resetEquationNumbers",MathJax.InputJax.TeX],
+        ["PreProcess",MathJax.Hub],
+        ["Reprocess",MathJax.Hub]
+      );
   }
-  componentDidUpdate() {
-      MathJax.Hub.Config({
-        TeX: {
-          equationNumbers: {
-            autoNumber: "AMS"
-          }
-        },
-        tex2jax: {
-          inlineMath: [ ['$','$'], ['\(', '\)'] ],
-          displayMath: [ ['$$','$$'] ],
-          processEscapes: true,
-        }
-      });
-      MathJax.Hub.Queue(['Typeset', MathJax.Hub])
-  }
-}
+
+} //class MarkdownWrapper
 
 MarkdownWrapper.propTypes = {
   route: React.PropTypes.object,
