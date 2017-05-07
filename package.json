@@ -1,13 +1,20 @@
 {
-  "name": "gatsby-starter-blog",
-  "description": "Starter Gatsby Blog",
+  "name": "blog",
+  "description": "Personal Blog",
   "version": "1.0.0",
-  "author": "Kyle Mathews <mathews.kyle@gmail.com>",
+  "author": "Piyush Singh <mf08ps1@mail.wbs.ac.uk>",
   "bugs": {
-    "url": "https://github.com/gatsbyjs/gatsby-starter-blog/issues"
+    "url": "https://github.com/Piyush3dB/blog"
   },
   "dependencies": {
     "gatsby": "^0.12.41",
+    "markdown-it": "^7.0.1",
+    "markdown-it-abbr": "^1.0.3",
+    "markdown-it-attrs": "^0.6.3",
+    "markdown-it-deflist": "^2.0.1",
+    "markdown-it-footnote": "^3.0.1",
+    "markdown-it-mathjax": "^2.0.0",
+    "markdown-it-sub": "^1.0.0",
     "lodash": "^4.17.2",
     "moment": "^2.18.1",
     "react-addons-shallow-compare": "^15.5.2",
@@ -22,7 +29,7 @@
   "devDependencies": {
     "gh-pages": "^0.12.0"
   },
-  "homepage": "https://github.com/gatsbyjs/gatsby-starter-blog#readme",
+  "homepage": "https://github.com/Piyush3dB/blog#readme",
   "keywords": [
     "gatsby"
   ],
@@ -30,7 +37,7 @@
   "main": "n/a",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gatsbyjs/gatsby-starter-blog.git"
+    "url": "git+https://github.com/Piyush3dB/blog.git"
   },
   "scripts": {
     "dev": "gatsby develop",
