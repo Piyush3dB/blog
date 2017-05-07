@@ -6,7 +6,7 @@ import { rhythm } from 'utils/typography'
 import { config } from 'config'
 import Bio from 'components/Bio'
 
-import '../css/zenburn.css'
+import '../css/prism-coy.css'
 
 class MarkdownWrapper extends React.Component {
   render () {

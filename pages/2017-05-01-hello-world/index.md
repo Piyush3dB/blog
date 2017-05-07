@@ -113,6 +113,11 @@ for i in range(10):
 
 
 
+````bash
+FROM kyma/docker-nginx
+ADD public/ /var/www
+CMD 'nginx'
+````
 
 ## D3js
 

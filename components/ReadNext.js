@@ -23,7 +23,7 @@ class ReadNext extends React.Component {
       )
       // Create pruned version of the body.
       const html = nextPost.data.body
-      const body = prune(html.replace(/<[^>]*>/g, ''), 200)
+      const body = prune(html.replace(/<[^>]*>/g, ''), 100)
 
       return (
         <div>
