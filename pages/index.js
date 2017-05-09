@@ -16,12 +16,12 @@ class BlogIndex extends React.Component {
     // Sort pages.
     const sortedPages = sortBy(this.props.route.pages, 'data.date')
 
-    console.log(sortedPages);
     // Posts are those with md extension that are not 404 pages OR have a date (meaning they're a react component post).
     const visiblePages = sortedPages.filter(page => (
       get(page, 'file.ext') === 'md' && !include(page.path, '/404') || get(page, 'data.date')
     ))
-
+    
+    // Generate links to render
     const pageLinks = visiblePages.map((page) => 
     (
         <li
