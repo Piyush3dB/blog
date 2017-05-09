@@ -7,6 +7,18 @@ path: "/hello-world/"
 
 This is my first post on my new fake blog! How exciting!
 
+<svg width="400" height="180">
+  <rect x="50" y="20" width="150" height="150" style="fill:blue;stroke:pink;stroke-width:5;opacity:0.5" />
+  Sorry, your browser does not support inline SVG.  
+</svg>
+
+
+=====
+
+
+
+
+
 I'm sure I'll write a lot more interesting things in the future.
 
 Oh, and here's a great quote from this Wikipedia on [salted duck eggs](http://en.wikipedia.org/wiki/Salted_duck_egg).
@@ -14,7 +26,7 @@ Oh, and here's a great quote from this Wikipedia on [salted duck eggs](http://en
 >A salted duck egg is a Chinese preserved food product made by soaking duck eggs in brine, or packing each egg in damp, salted charcoal. In Asian supermarkets, these eggs are sometimes sold covered in a thick layer of salted charcoal paste. The eggs may also be sold with the salted paste removed, wrapped in plastic, and vacuum packed. From the salt curing process, the salted duck eggs have a briny aroma, a gelatin-like egg white and a firm-textured, round yolk that is bright orange-red in color.
 
 ![Chinese Salty Egg](./salty_egg.jpg)
-
+*image_caption*
 
 
 
@@ -110,6 +122,15 @@ for i in range(10):
     print i
 ```
 
+Here is an inline note.^[Inlines notes are easier to write, since
+you don't have to pick an identifier and move down to type the
+note.]
+
+
+
+Here is an inline note.^[Inlines notes are easier to write, since
+you don't have to pick an identifier and move down to type the
+note.]
 
 
 
@@ -123,11 +144,6 @@ CMD 'nginx'
 
 
 
-<svg  xmlns="http://www.w3.org/2000/svg"
-      xmlns:xlink="http://www.w3.org/1999/xlink">
-    <rect x="10" y="10" height="100" width="1000"
-          style="stroke:#ff0000; fill: #0000ff"/>
-</svg>
 
 
 Next  

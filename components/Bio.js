@@ -15,6 +15,8 @@ class Bio extends React.Component {
           src={profilePic}
           alt={`author ${config.authorName}`}
           style={{
+            border: '1px solid #fff',
+            boxShadow: '0 0 2px rgba(0, 0, 0, 0.125)',
             float: 'left',
             marginRight: rhythm(1/4),
             marginBottom: 0,
@@ -22,10 +24,11 @@ class Bio extends React.Component {
             height: rhythm(2),
           }}
         />
-        Written by <strong>{config.authorName}</strong> who lives and works in London building useful things. <a href="https://twitter.com/Piyush3dB">You can follow him on Twitter</a>
+        Written by <strong>{config.authorName}</strong> who lives and works in London building useful things. <a href="https://twitter.com/Piyush3dB">Find @Piyush3dB on Twitter.</a>
       </p>
     )
   }
 }
 
 export default Bio
+
