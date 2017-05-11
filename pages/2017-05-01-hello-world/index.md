@@ -1,5 +1,5 @@
 ---
-title: Hello World
+title: Hello World. Convolution à trous.
 date: "2017-05-01T22:12:03.284Z"
 readNext: "/my-second-post/"
 path: "/hello-world/"

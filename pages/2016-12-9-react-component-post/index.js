@@ -2,9 +2,12 @@ const React = require('react')
 const DatePicker = require('./single-date-picker')
 require('react-dates/css/variables.scss')
 require('react-dates/css/styles.scss')
+var md = require('markdown-it')()
+            .use(require('markdown-it-mathjax')());
 
 class Post extends React.Component {
   render () {
+
     return (
       <div>
         <h1>{this.props.route.page.data.title}</h1>
@@ -18,6 +21,35 @@ class Post extends React.Component {
       </div>
     )
   }
+
+
+  componentDidMount()  { this.queueToMathjaxHub(); }
+  componentDidUpdate() { this.queueToMathjaxHub(); }
+
+  queueToMathjaxHub(){
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: {
+            autoNumber: "AMS"
+          }
+        },
+        tex2jax: {
+          inlineMath: [ ['$','$'] ],
+          displayMath: [ ['$$','$$'] ],
+          processEscapes: true,
+          useLabelIds: true,
+          startNumber: 0
+        }
+      });
+      MathJax.Hub.Queue(
+        ["Typeset", MathJax.Hub],
+        ["resetEquationNumbers",MathJax.InputJax.TeX],
+        ["PreProcess",MathJax.Hub],
+        ["Reprocess",MathJax.Hub]
+      );
+  }
+
+
 }
 
 export default Post
