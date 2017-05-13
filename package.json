@@ -7,13 +7,14 @@
     "url": "https://github.com/Piyush3dB/blog"
   },
   "dependencies": {
-    "gatsby": "^0.12.41",
+    "gatsby": "^0.12.46",
     "lodash": "^4.17.2",
     "markdown-it": "^7.0.1",
     "markdown-it-abbr": "^1.0.3",
     "markdown-it-attrs": "^0.6.3",
     "markdown-it-deflist": "^2.0.1",
     "markdown-it-footnote": "^3.0.1",
+    "markdown-it-jsx": "^1.1.0",
     "markdown-it-mathjax": "^2.0.0",
     "markdown-it-sub": "^1.0.0",
     "moment": "^2.18.1",

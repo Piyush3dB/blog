@@ -56,6 +56,9 @@ class MarkdownWrapper extends React.Component {
           processEscapes: true,
           useLabelIds: true,
           startNumber: 0
+        },
+        CommonHTML: {
+          scale: 90
         }
       });
       MathJax.Hub.Queue(
