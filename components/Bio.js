@@ -24,9 +24,7 @@ class Bio extends React.Component {
             height: rhythm(2),
           }}
         />
-        Written by 
-        <strong>{config.authorName}</strong> 
-        who lives and works in London building useful things. 
+        Written by <strong>{config.authorName}</strong> who lives and works in London building useful things. 
         <a href="https://twitter.com/Piyush3dB"> Find @Piyush3dB on Twitter.</a>
       </p>
     )

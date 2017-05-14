@@ -48,7 +48,8 @@ class MarkdownWrapper extends React.Component {
         TeX: {
           equationNumbers: {
             autoNumber: "AMS"
-          }
+          },
+          extensions: ["color.js"]
         },
         tex2jax: {
           inlineMath: [ ['$','$'], ['\(', '\)'] ],
@@ -58,7 +59,7 @@ class MarkdownWrapper extends React.Component {
           startNumber: 0
         },
         CommonHTML: {
-          scale: 90
+          scale: 95
         }
       });
       MathJax.Hub.Queue(

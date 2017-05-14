@@ -1,56 +1,28 @@
 ---
-title: Hello World. Convolution à trous.
-date: "2017-05-01T22:12:03.284Z"
-readNext: "/my-second-post/"
-path: "/hello-world/"
+title: Correlation Neural Networks, rather.
+date: "2017-01-20T22:12:03.284Z"
+path: "/Correlation-Neural-Networks/"
 ---
 
+CorrRNN
+
 This is my first post on my new fake blog! How exciting!
-
-<svg width="400" height="180">
-  <rect x="50" y="20" width="150" height="150" style="fill:blue;stroke:pink;stroke-width:5;opacity:0.5" />
-  Sorry, your browser does not support inline SVG.  
-</svg>
-
-
-=====
-
-
-
-
-
-I'm sure I'll write a lot more interesting things in the future.
-
-Oh, and here's a great quote from this Wikipedia on [salted duck eggs](http://en.wikipedia.org/wiki/Salted_duck_egg).
-
->A salted duck egg is a Chinese preserved food product made by soaking duck eggs in brine, or packing each egg in damp, salted charcoal. In Asian supermarkets, these eggs are sometimes sold covered in a thick layer of salted charcoal paste. The eggs may also be sold with the salted paste removed, wrapped in plastic, and vacuum packed. From the salt curing process, the salted duck eggs have a briny aroma, a gelatin-like egg white and a firm-textured, round yolk that is bright orange-red in color.
-
-
-$$
-    \color{red}{ \sigma(y-x) } 
-$$
-
-![Chinese Salty Egg](./salty_egg.jpg)
-
 
 H~2~0
 
 
-Centering text:
+
+Correlation here:
 
 <p align="center">
-  <b>Some Links:</b>
-  <br>
-  <a href="#">Link 1</a> |
-  <a href="#">Link 2</a> |
-  <a href="#">Link 3</a>
-  <br>
-  <img src="http://s.4cdn.org/image/title/105.gif" style="border: 5px solid black">
-  <br>
-  <em>image_caption</em>
+  <img src="./corr_numerical_no_padding_no_strides.gif">
 </p>
 
-Normal text
+
+Convolution here
+<p align="center">
+  <img src="./conv_numerical_no_padding_no_strides.gif">
+</p>
 
 
 
@@ -64,12 +36,12 @@ In equation $\eqref{eq:sample}$, we find the value of an
 interesting integral:
 
 $$
+\star *
 \begin{equation}
   \int_0^\infty \frac{x^3}{e^x-1}\,dx = \frac{\pi^4}{15}
   \label{eq:sample}
 \end{equation}
 $$
-
 
 
 Bigger equations:
@@ -111,14 +83,47 @@ $$
 
 And matrices too:
 $$
-A_{m,n} = 
- \begin{pmatrix}
-  a_{1,1} & a_{1,2} & \cdots & a_{1,n} \\\\
-  a_{2,1} & a_{2,2} & \cdots & a_{2,n} \\\\
-  \vdots  & \vdots  & \ddots & \vdots  \\\\
-  a_{m,1} & a_{m,2} & \cdots & a_{m,n} 
- \end{pmatrix}
+K_{\color{blue}{corr}} = 
+ \begin{bmatrix}
+  \color{blue}0 & \color{blue}1 & \color{blue}2 \\\\
+  \color{blue}3 & \color{blue}4 & \color{blue}5 \\\\
+  \color{blue}6 & \color{blue}7 & \color{blue}8  \\\\
+ \end{bmatrix}
 $$
+
+$$
+\begin{align\*}
+K_{\color{red}{conv}} &= flip\big( K_{\color{blue}{corr}} \big) \\\\
+                      &= 
+ \begin{bmatrix}
+  \color{red}8 & \color{red}7 & \color{red}6 \\\\
+  \color{red}5 & \color{red}4 & \color{red}3 \\\\
+  \color{red}2 & \color{red}1 & \color{red}0  \\\\
+ \end{bmatrix}
+\end{align\*}
+$$
+
+
+$$
+I = 
+ \begin{bmatrix}
+  1&2&2&1&0 \\\\
+  3&3&3&3&0 \\\\
+  3&0&0&2&2 \\\\
+  0&3&0&3&3 \\\\
+  2&2&2&3&2 \\\\
+ \end{bmatrix}
+$$
+
+$$
+I \color{red}{*} K_{\color{red}{conv}} =  I \color{blue}{\star} K_{\color{blue}{corr}}
+$$
+
+
+Some Markdown text with some <span style="color:blue"> *blue* </span>text.
+
+
+
 
 
 ## Some code
