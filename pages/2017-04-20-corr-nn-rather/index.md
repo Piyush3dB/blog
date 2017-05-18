@@ -1,30 +1,51 @@
 ---
-title: Correlation Neural Networks, rather.
+title: Convolutional Neural Networks don't perform convolution.
 date: "2017-01-20T22:12:03.284Z"
-path: "/Correlation-Neural-Networks/"
+path: "/ConvNet-dont-do-Conv/"
 ---
 
-CorrRNN
+Here is a problem: say we wish to convolve a 2D signal $I$ with kernel $K$ each defined as
 
-This is my first post on my new fake blog! How exciting!
+$$
+I = 
+ \begin{bmatrix}
+  1&2&2&1&0 \\\\
+  3&3&3&3&0 \\\\
+  3&0&0&2&2 \\\\
+  0&3&0&3&3 \\\\
+  2&2&2&3&2 \\\\
+ \end{bmatrix}
+$$
 
-H~2~0
+$$
+K = 
+ \begin{bmatrix}
+  0 & 1 & 2 \\\\
+  3 & 4 & 5 \\\\
+  6 & 7 & 8  \\\\
+ \end{bmatrix}
+$$
 
-
-
-Correlation here:
+Which of the following two animations correctly demonstrates the convolution procedure?  One with the <span style="color:blue"> blue </span>kernel or one with the <span style="color:red"> red </span> kernel?
 
 <p align="center">
   <img src="./corr_numerical_no_padding_no_strides.gif">
 </p>
 
-
-Convolution here
 <p align="center">
   <img src="./conv_numerical_no_padding_no_strides.gif">
 </p>
 
+The animations show a kernel sliding across the signal, at each spatial location performing a [MAC procedure](https://en.wikipedia.org/wiki/Multiply%E2%80%93accumulate_operation)^[In Digital Signal Processing, the multiply–accumulate operation is fundamental and is the basis upon which dot product procedures are implemented.], otherwise referred to as the dot product of the kernel and the signal spanning the kernel dimension.  Observe that the <span style="color:red"> red </span>kernel is a flipped re-ordering of the <span style="color:blue"> blue </span>kernel.
 
+The correct answer is infact the one with the <span style="color:red"> red </span>kernel.
+
+
+The kernel is positioned along the signal
+
+Give it a think and settle on an answer before reading any further.
+
+The key 
 
 
 ## Mathematical Equations
