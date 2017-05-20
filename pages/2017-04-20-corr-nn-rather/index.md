@@ -26,7 +26,7 @@ K =
  \end{bmatrix}
 $$
 
-Which of the following two animations correctly demonstrates the convolution procedure?  One with the <span style="color:blue"> blue </span>kernel or one with the <span style="color:red"> red </span> kernel?
+Which of the following two animations demonstrates the convolution procedure?  One with the <span style="color:blue"> blue </span>kernel or one with the <span style="color:red"> red </span> kernel?
 
 <p align="center">
   <img src="./corr_numerical_no_padding_no_strides.gif">
@@ -36,10 +36,23 @@ Which of the following two animations correctly demonstrates the convolution pro
   <img src="./conv_numerical_no_padding_no_strides.gif">
 </p>
 
-The animations show a kernel sliding across the signal, at each spatial location performing a [MAC procedure](https://en.wikipedia.org/wiki/Multiply%E2%80%93accumulate_operation)^[In Digital Signal Processing, the multiply–accumulate operation is fundamental and is the basis upon which dot product procedures are implemented.], otherwise referred to as the dot product of the kernel and the signal spanning the kernel dimension.  Observe that the <span style="color:red"> red </span>kernel is a flipped re-ordering of the <span style="color:blue"> blue </span>kernel.
+The animations show a kernel sliding across the signal, at each spatial location performing a [MAC operation](https://en.wikipedia.org/wiki/Multiply%E2%80%93accumulate_operation)^[In Digital Signal Processing, the multiply–accumulate operation is fundamental and is the basis upon which dot product procedures are implemented.], also known as the dot product.  Observe that the <span style="color:red"> red </span>kernel is a flip re-ordering of the <span style="color:blue"> blue </span>kernel.
 
-The correct answer is infact the one with the <span style="color:red"> red </span>kernel.
+The correct answer is infact the one with the <span style="color:red"> red </span>kernel, and this can be verified by the mathematical definition of convolution in this case:
 
+
+$$
+P_{ij} = \sum_{23}^{123}
+$$
+
+
+
+
+
+
+finite support in the set $\\{ -3, -2, -1, 0, 1, 2, 3 \\}$ and the kernel has support in $\\{-1, 0, 1 \\}$
+
+$\text{Look at the }\mathtt{\{}\text{braces}\mathtt{\}}\texttt{.}$
 
 The kernel is positioned along the signal
 
