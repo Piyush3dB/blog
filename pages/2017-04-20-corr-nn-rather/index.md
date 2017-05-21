@@ -56,7 +56,6 @@ $\text{Look at the }\mathtt{\{}\text{braces}\mathtt{\}}\texttt{.}$
 
 The kernel is positioned along the signal
 
-Give it a think and settle on an answer before reading any further.
 
 The key 
 
@@ -156,69 +155,68 @@ $$
 
 Some Markdown text with some <span style="color:blue"> *blue* </span>text.
 
+WHat do the deep learning frameworks do.  For this test I've used the [MXNet](http://mxnet.io/) which provides the `mx.symbol.Convolution` operator for this functionality.
 
 
 
-
-## Some code
-
-Javascript
-```javascript
-function $initHighlight(block, flags) {
-  try {
-    if (block.className.search(/\bno\-highlight\b/) != -1)
-      return processBlock(block, true, 0x0F) + ' class=""';
-  } catch (e) {
-    /* handle exception */
-  }
-  for (var i = 0 / 2; i < classes.length; i++) { // "0 / 2" should not be parsed as regexp
-    if (checkCondition(classes[i]) === undefined)
-      return /\d+/g;
-  }
-}
-```
-
-Python
 ```python
-import time
-# Quick, count to ten!
-for i in range(10):
-    # (but not *too* quick)
-    time.sleep(0.5)
-    print i
+## Import mxnet python module
+import mxnet as mx
+
+## Define operator as a computation graph
+net  = mx.symbol.Convolution(data=mx.sym.Variable('I'), 
+                             num_filter=1, 
+                             kernel=(3,3), 
+                             name="K")
+
+## Create executor object for operator
+c_exec = net.simple_bind(ctx=mx.cpu(), I=(1,1,5,5))
+
+## Copy input arguments to executor space
+args={}
+args['I'] = mx.nd.array([1,2,2,1,0,
+                         3,3,3,3,0,
+                         3,0,0,2,2,
+                         0,3,0,3,3,
+                         2,2,2,3,2]).reshape((1,1,5,5))
+args['K_weight'] = mx.nd.array([0,1,2,
+                                3,4,5,
+                                6,7,8]).reshape((1,1,3,3))
+c_exec.copy_params_from(arg_params=args)
+
+## Print arguments
+print c_exec.arg_dict['I'].asnumpy()
+print c_exec.arg_dict['K_weight'].asnumpy()
+
+## Forward arguments through computation graph
+c_exec.forward()
+
+## Show output
+print c_exec.outputs[0].asnumpy()
+
+# Result ------>
+#
+#[[[[ 60.  56.  52.]
+#   [ 39.  61.  66.]
+#   [ 54.  78.  82.]]]]
+#
+
 ```
 
 
-Here is an inline note.^[Inlines notes are easier to write, since
-you don't have to pick an identifier and move down to type the
-note.]
+Some text in which I cite an author.[^fn1]
 
+More text. Another citation.[^fn2]
 
+What is this? Yet *another* citation?[^fn3]
 
-Here is an inline note.^[Inlines notes are easier to write, since
-you don't have to pick an identifier and move down to type the
-note.]
+[^fn1]: So Chris Krycho, "Not Exactly a Millennium," chriskrycho.com, July 22,
+    2015, http://www.chriskrycho.com/2015/not-exactly-a-millennium.html
+    (accessed July 25, 2015), ¶6.
 
+[^fn2]: Contra Krycho, ¶15, who has everything *quite* wrong.
 
-
-````bash
-FROM kyma/docker-nginx
-ADD public/ /var/www
-CMD 'nginx'
-````
-
-## D3js
-
-
-
-
-
-Next  
-
-
-<iframe width="420" height="315" src="http://www.youtube.com/embed/_Kz8lito3U8" frameborder="0" allowfullscreen></iframe>
-
-
+[^fn3]: ibid.
 
 
 
