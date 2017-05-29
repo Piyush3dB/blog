@@ -1,10 +1,10 @@
 ---
-title: Convolutional Neural Networks don't perform convolution.
+title: Convolutional Neural Networks don't actually perform convolution.
 date: "2017-01-20T22:12:03.284Z"
 path: "/ConvNet-dont-do-Conv/"
 ---
 
-Here is a problem: say we wish to convolve a 2D signal $I$ with kernel $K$ each defined as
+Here is a problem: say we want to convolve a 2D signal $I$ with kernel $K$ each defined as
 
 $$
 I = 
@@ -42,7 +42,7 @@ The correct answer is infact the one with the <span style="color:red"> red </spa
 
 
 $$
-P_{ij} = \sum_{23}^{123}
+C[x,y] = \sum_{j=-1}^{1} \sum_{i=-1}^{1} I[x+i,y+j]K[-i, -j]
 $$
 
 
@@ -50,7 +50,7 @@ $$
 
 
 
-finite support in the set $\\{ -3, -2, -1, 0, 1, 2, 3 \\}$ and the kernel has support in $\\{-1, 0, 1 \\}$
+finite support in the set $x,y \in \\{ -1, 0, 1 \\}$ and the kernel has support $x,y \in \\{-1, 0, 1 \\}$. $x+i,y+j \in \\{ -2, -1, 0, 1, 2 \\}$
 
 $\text{Look at the }\mathtt{\{}\text{braces}\mathtt{\}}\texttt{.}$
 
