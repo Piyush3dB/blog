@@ -26,7 +26,13 @@ K =
  \end{bmatrix}
 $$
 
-Which of the following two animations demonstrates the convolution procedure?  One with the <span style="color:blue"> blue </span>kernel or one with the <span style="color:red"> red </span> kernel?
+Which of the following two animations demonstrates the convolution procedure? i.e.  
+
+$$
+  convolve(I, K)
+$$
+
+One with the <span style="color:blue"> blue </span>kernel or one with the <span style="color:red"> red </span> kernel?
 
 <p align="center">
   <img src="./corr_numerical_no_padding_no_strides.gif">
@@ -113,9 +119,12 @@ So according to MXNet, the implementation of convolution does not take into acco
 
 
 
-> The Convolution Operator in ConvNets don't perform Convolution, but rather, perform Correlation.
+> The Convolution Operator in ConvNets don't perform Convolution, but rather, perform Correlation because the kernel is not flipped.
 
 
+
+
+> Convolution is the link that bridges Correlation with Frequency Domain Theory.  In Signal Processing theory this link is known as the Convolution Theorem.
 
 
 
@@ -125,11 +134,25 @@ So according to MXNet, the implementation of convolution does not take into acco
 
 
 
-
-
+Notation:
+* to denote $\color{red}{convolution}$ : $\color{red}{*}$
+* to denote $\color{blue}{correlation}$ : $\color{blue}{\star}$
 
 
 And matrices too:
+
+
+
+
+$$
+  \begin{align\*}
+    \color{red}{convolve}(I, K) &=  \color{blue}{correlate}(I, K_{flipped}) \\\\
+    \color{red}{convolve}(I, K_{flipped}) &=  \color{blue}{correlate}(I, K)
+  \end{align\*}
+$$
+
+
+
 $$
 K_{\color{blue}{corr}} = 
  \begin{bmatrix}
@@ -152,20 +175,41 @@ K_{\color{red}{conv}} &= flip\big( K_{\color{blue}{corr}} \big) \\\\
 $$
 
 
+
+
 $$
-I = 
+I \color{red}{*} K_{\color{red}{conv}} =  I \color{blue}{\star} K_{\color{blue}{corr}}
+$$
+
+
+$$
  \begin{bmatrix}
   1&2&2&1&0 \\\\
   3&3&3&3&0 \\\\
   3&0&0&2&2 \\\\
   0&3&0&3&3 \\\\
   2&2&2&3&2 \\\\
+ \end{bmatrix}\color{red}{*}
+ \begin{bmatrix}
+  \color{red}8 & \color{red}7 & \color{red}6 \\\\
+  \color{red}5 & \color{red}4 & \color{red}3 \\\\
+  \color{red}2 & \color{red}1 & \color{red}0  \\\\
+ \end{bmatrix}=
+ \begin{bmatrix}
+  1&2&2&1&0 \\\\
+  3&3&3&3&0 \\\\
+  3&0&0&2&2 \\\\
+  0&3&0&3&3 \\\\
+  2&2&2&3&2 \\\\
+ \end{bmatrix}\color{blue}{\star}
+ \begin{bmatrix}
+  \color{blue}0 & \color{blue}1 & \color{blue}2 \\\\
+  \color{blue}3 & \color{blue}4 & \color{blue}5 \\\\
+  \color{blue}6 & \color{blue}7 & \color{blue}8  \\\\
  \end{bmatrix}
 $$
 
-$$
-I \color{red}{*} K_{\color{red}{conv}} =  I \color{blue}{\star} K_{\color{blue}{corr}}
-$$
+
 
 
 Some Markdown text with some <span style="color:blue"> *blue* </span>text.
