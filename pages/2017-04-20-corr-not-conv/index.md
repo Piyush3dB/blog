@@ -4,7 +4,7 @@ date: "2017-01-20T22:12:03.284Z"
 path: "/ConvNet-dont-do-Conv/"
 ---
 
-Here is a problem: say we would like to convolve 2D signal $I$ with kernel $K$ defined as
+Here is a problem: we'd like to convolve convolve image $I$ and kernel $K$ where both signals are 2D defined as
 
 $$
 I = 
@@ -16,7 +16,6 @@ I =
   2&2&2&3&2 \\\\
  \end{bmatrix}
 $$
-
 $$
 K = 
  \begin{bmatrix}
@@ -26,18 +25,13 @@ K =
  \end{bmatrix}
 $$
 
+A typical computation graph to represent this problem is a single node for the operator and edges representing the tensors
 
 <p align="center">
   <img src="./conv2d.png">
 </p>
 
-Which of the following two animations demonstrates the convolution procedure? i.e.  
-
-$$
-  convolve(I, K)
-$$
-
-One with the <span style="color:blue"> blue </span>kernel or one with the <span style="color:red"> red </span> kernel?
+Which of the following two animations demonstrates $convolve(I, K)$, the one with the <span style="color:blue"> blue </span>kernel or one with the <span style="color:red"> red </span> kernel?
 
 <p align="center">
   <img src="./corr_numerical_no_padding_no_strides.gif">
@@ -47,33 +41,29 @@ One with the <span style="color:blue"> blue </span>kernel or one with the <span 
   <img src="./conv_numerical_no_padding_no_strides.gif">
 </p>
 
+Both animations show a [MAC operation](https://en.wikipedia.org/wiki/Multiply%E2%80%93accumulate_operation) being performed as the kernel slides across the image, thew only difference being that the <span style="color:red"> red </span>kernel is a flip re-ordering of the original kernel $K$ colored <span style="color:blue"> blue</span>.
 
-The animations show a [MAC operation](https://en.wikipedia.org/wiki/Multiply%E2%80%93accumulate_operation) being performed as the kernel slides across the signal, but notice that the <span style="color:red"> red </span>kernel is a flip re-ordering of the <span style="color:blue"> blue </span>kernel. 
-
-Mathematically the 2D convolutuion procedure is written as
+For additional clues to the answer we may turn to the mathematical definition of 2D convolution
 
 $$
 C[x,y] = \sum_{j=-1}^{1} \sum_{i=-1}^{1} I[x+i,y+j]K[-i, -j]
 $$
 
+The indices are specific to the signal dimensions used here with 0 centering:
+* $x,y \in [ -1, 0, 1 ]$ for the result
+* $i,j \in [-1, 0, 1 ]$ for the kernel
+* $x+i,y+j \in [ -2, -1, 0, 1, 2 ]$ for the input image
 
-where the output $C$ has finite support in the set $x,y \in \\{ -1, 0, 1 \\}$ and the kernel has support $x,y \in \\{-1, 0, 1 \\}$. $x+i,y+j \in \\{ -2, -1, 0, 1, 2 \\}$
-
-where $\color{red}{K[-i, -j]}$ is the flip of $\color{blue}{K[i,j]}$.
-
-
-So answer to the question is the animation one with the <span style="color:red"> red </span>kernel and this is confirmed by the mathematical definition.
+The clue is in the orientation of the kernel in the above formula: $\color{red}{K[-i, -j]}$ is a flip re-ordering of $\color{blue}{K[i,j]}$ so the correct answer is the <span style="color:red"> RED</span> animation.
 
 
 ### What do the Deep Learning frameworks implement?
 
-
-Hold this thought in mind and think about what the Deep Learning frameworks implement for the Convolution operator.  I decided to test this in [MXNet](http://mxnet.io) using the python script below.  We expect this script to produce an aoutput that is consistent with the mathematical definition i.e. result with the <span style="color:red"> red </span>kernel.
+I decided to run a test in [MXNet](http://mxnet.io) to find out what sort of answer I'd get.  The python script below simulates the operator with signals $I$ and $K$ as defined above, expecting a result consistent with the mathematical definition i.e. the result of the <span style="color:red"> red</span> animation.
 
 
 
 ```python
-## Import mxnet python module
 import mxnet as mx
 
 ## Define operator as a computation graph
@@ -107,7 +97,7 @@ c_exec.forward()
 ## Show output
 print c_exec.outputs[0].asnumpy()
 
-# Result shows the blue kernel is used:
+# Result shows a correlation is performed:
 #
 #[[[[ 60  56  52]
 #   [ 39  61  66]
@@ -115,48 +105,33 @@ print c_exec.outputs[0].asnumpy()
 #
 ```
 
-So according to MXNet, the implementation of convolution does not take into account a flip of the kernel and is infact performing the animation with the <span style="color:blue"> blue </span>kernel above.  This pattern is not unique to MXNet but is common across all other frameworks.
+So according to MXNet, the implementation of convolution does not take into account a flip of the kernel and is infact performing a correlation.  This pattern is not unique to MXNet but is common across all other frameworks.  
 
+So why are the frameworks implementing it in this way when the math clearly states what should be done?  To understand this we have to take a step back and appreciate how convolution and correlation are related.
 
+### More on the Math.
 
+Lets introduce some notation:
+* $\color{red}{*}$ to denote <span style="color:red"> convolution</span>.  This is implemented using correlation with a flipped kernel.
+* $\color{blue}{\star}$ to denote <span style="color:blue"> correlation</span>.  This is implemented as a sliding dot product.
 
-### Correlation Neural Networks, rather.
-
-
-
-> The Convolution Operator in ConvNets don't perform Convolution, but rather, perform Correlation because the kernel is not flipped.
-
-
-
-
-> Convolution is the link that bridges Correlation with Frequency Domain Theory.  In Signal Processing theory this link is known as the Convolution Theorem.
-
-
-
-
-
-... performing a^[In Digital Signal Processing, the multiply–accumulate operation is fundamental and is the basis upon which dot product procedures are implemented.], also known as the dot product.  
-
-
-
-Notation:
-* to denote $\color{red}{convolution}$ : $\color{red}{*}$
-* to denote $\color{blue}{correlation}$ : $\color{blue}{\star}$
-
-
-And matrices too:
-
-
-
+What is requested when the convolution operator is invoked is identity $\eqref{eq:corrflp}$ but what is actually performed is the RHS of identity $\eqref{eq:corr}$.
 
 $$
-  \begin{align\*}
-    \color{red}{convolve}(I, K) &=  \color{blue}{correlate}(I, K_{flipped}) \\\\
+  \begin{align}
+    \color{red}{convolve}(I, K) &=  \color{blue}{correlate}(I, K_{flipped})
+    \label{eq:corrflp}
+  \end{align}
+$$
+
+$$
+  \begin{align}
     \color{red}{convolve}(I, K_{flipped}) &=  \color{blue}{correlate}(I, K)
-  \end{align\*}
+    \label{eq:corr}
+  \end{align}
 $$
 
-
+Using matrices adds more clarity
 
 $$
 K_{\color{blue}{corr}} = 
@@ -166,6 +141,8 @@ K_{\color{blue}{corr}} =
   \color{blue}6 & \color{blue}7 & \color{blue}8  \\\\
  \end{bmatrix}
 $$
+
+is the correlation kernel, then the convolution kernel is derived as
 
 $$
 \begin{align\*}
@@ -179,13 +156,13 @@ K_{\color{red}{conv}} &= flip\big( K_{\color{blue}{corr}} \big) \\\\
 \end{align\*}
 $$
 
-
-
+Identity $\eqref{eq:corr}$ is then re-written as 
 
 $$
 I \color{red}{*} K_{\color{red}{conv}} =  I \color{blue}{\star} K_{\color{blue}{corr}}
 $$
 
+when expanded 
 
 $$
  \begin{bmatrix}
@@ -214,6 +191,43 @@ $$
  \end{bmatrix}
 $$
 
+
+
+
+
+
+
+
+scaas
+
+
+
+
+
+
+
+### <span style="color:blue"> Correlation </span>Neural Networks, rather.
+
+It turns out that Convolutional Neural Network is a bit of a misnomer, depending on how you think about it.  Two lines of thought:
+
+1. The 
+
+> The convolution operator in ConvNets is not implemented as convolution, but rather, as correlation.  A more appropriate name for ConvNets is infact CorrNet.
+
+
+
+
+> From a Signal Processing view, convolution is the link that bridges time domain correlation with frequency domain concepts.  Formally this link is known as the Convolution Theorem.
+
+
+
+
+
+... performing a^[In Digital Signal Processing, the multiply–accumulate operation is fundamental and is the basis upon which dot product procedures are implemented.], also known as the dot product.  
+
+
+
+And matrices too:
 
 
 
