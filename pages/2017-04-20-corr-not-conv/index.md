@@ -26,6 +26,11 @@ K =
  \end{bmatrix}
 $$
 
+
+<p align="center">
+  <img src="./conv2d.png">
+</p>
+
 Which of the following two animations demonstrates the convolution procedure? i.e.  
 
 $$

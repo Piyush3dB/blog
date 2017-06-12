@@ -1,0 +1,16 @@
+digraph plot {
+	// dot -Tpng -O conv2d
+	graph [bgcolor=ivory fontcolor=black fontsize=16 label=" " overlap=false rankdir=TB ratio=auto size="3,4!" splines=true]
+	node [color=black fillcolor="#006699" fontcolor=black fontname="Courier New" shape=box style="rounded,filled"]
+	edge [arrowhead=normal color=black dir=none fontcolor=black fontname="Courier New" fontsize=12 minlen=1 style=solid]
+		data [label="input \lshape: (1x1x5x5) \lsize: 25 [73.53%]\l" arrowhead=normal color=black fillcolor=lawngreen fontsize=12 shape=point style="filled,bold"]
+		"2d_conv_weight" [label="2d_conv_weight \lshape: (1x1x3x3) \lsize: 9 [100.00%]\l" arrowhead=normal color=navyblue fillcolor=slategray1 fontcolor=navy fontsize=8 shape=point style="filled,bold"]
+		"2d_conv" [label="{ Convolution | no_bias: True,\lkernel: (3,3),\lstride: (1,1),\ldilate: (1,1),\lpad: (0,0),\lnum_filter: 1\l | 2d_conv }" arrowhead=normal color=red fillcolor=cadetblue1 fontsize=10 shape=record]
+		end_invis [label="Output \lshape: (1x1x3x3) \lsize: 9 [26.47%]\l" arrowhead=normal color=black fillcolor=lawngreen fontsize=12 shape=point style="filled,bold"]
+			end_invis -> "2d_conv" [label="output
+(1x1x3x3)" arrowhead=diamond arrowtail=open color=red dir=back fontcolor=red fontname="Courier New" fontsize=10 penwidth=2]
+			"2d_conv" -> data [label="input
+(1x1x5x5)" arrowhead=diamond arrowtail=open color=red dir=back fontcolor=red fontname="Courier New" fontsize=10 penwidth=2]
+			"2d_conv" -> "2d_conv_weight" [label="weight
+(1x1x3x3)" arrowhead=diamond arrowtail=open color=navy dir=back fontcolor=navy fontname="Courier New" fontsize=10 penwidth=2]
+}
