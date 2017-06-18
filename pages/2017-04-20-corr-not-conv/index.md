@@ -4,7 +4,7 @@ date: "2017-01-20T22:12:03.284Z"
 path: "/ConvNet-dont-do-Conv/"
 ---
 
-Here is a problem: we'd like to convolve convolve image $I$ and kernel $K$ where both signals are 2D defined as
+Here is a problem: we'd like to convolve convolve image $I$ with kernel $K$ where their definitions are
 
 $$
 I = 
@@ -25,13 +25,13 @@ K =
  \end{bmatrix}
 $$
 
-A typical computation graph to represent this problem is a single node for the operator and edges representing the tensors
+In terms of a computation graph for this we have a single node representing the operatr edges representing signal dimensions as full tensors
 
 <p align="center">
   <img src="./conv2d.png">
 </p>
 
-Which of the following two animations demonstrates $convolve(I, K)$, the one with the <span style="color:blue"> blue </span>kernel or one with the <span style="color:red"> red </span> kernel?
+This graph represents a sliding dot product computation according to one of the animations below:
 
 <p align="center">
   <img src="./corr_numerical_no_padding_no_strides.gif">
@@ -41,21 +41,61 @@ Which of the following two animations demonstrates $convolve(I, K)$, the one wit
   <img src="./conv_numerical_no_padding_no_strides.gif">
 </p>
 
-Both animations show a [MAC operation](https://en.wikipedia.org/wiki/Multiply%E2%80%93accumulate_operation) being performed as the kernel slides across the image, thew only difference being that the <span style="color:red"> red </span>kernel is a flip re-ordering of the original kernel $K$ colored <span style="color:blue"> blue</span>.
+Which of the two animations demonstrates the correct procedure for $convolve(I, K)$, the one with the <span style="color:blue"> blue </span>kernel or one with the <span style="color:red"> red </span> kernel?  
 
-For additional clues to the answer we may turn to the mathematical definition of 2D convolution
+Scroll no further untill you've settled on an answer.
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+### Red or blue?
+
+
+Both animations show a [MAC operation](https://en.wikipedia.org/wiki/Multiply%E2%80%93accumulate_operation) being performed as the kernel slides across the image, but the dfference is that the <span style="color:red"> red </span>kernel is a flip re-ordering of the original kernel $K$ colored <span style="color:blue"> blue</span>.
+
+We may turn to the mathematical definition of 2D convolution to seek the answer
 
 $$
 C[x,y] = \sum_{j=-1}^{1} \sum_{i=-1}^{1} I[x+i,y+j]K[-i, -j]
 $$
 
-The indices are specific to the signal dimensions used here with 0 centering:
+The indices are $0$ centered and specific to the signal dimensions used here:
 * $x,y \in [ -1, 0, 1 ]$ for the result
 * $i,j \in [-1, 0, 1 ]$ for the kernel
 * $x+i,y+j \in [ -2, -1, 0, 1, 2 ]$ for the input image
 
-The clue is in the orientation of the kernel in the above formula: $\color{red}{K[-i, -j]}$ is a flip re-ordering of $\color{blue}{K[i,j]}$ so the correct answer is the <span style="color:red"> RED</span> animation.
+In the definition the orientation of the kernel $\color{red}{K[-i, -j]}$ is a flip re-ordering of $\color{blue}{K[i,j]}$ so the correct answer is the <span style="color:red"> RED</span> animation shows convolution.
 
+Testing this with Python Scipy to see the result gives
+
+```python
+import numpy as np
+from scipy import signal
+
+I = np.array([1,2,2,1,0,
+              3,3,3,3,0,
+              3,0,0,2,2,
+              0,3,0,3,3,
+              2,2,2,3,2]).reshape((5,5))
+
+K = np.array([0,1,2,
+              3,4,5,
+              6,7,8]).reshape((3,3))
+
+out = signal.convolve2d(I, K, 'valid')
+    
+print out
+# out = 
+#[[76 72 52]
+# [81 75 62]
+# [42 42 54]]
+
+```
 
 ### What do the Deep Learning frameworks implement?
 
@@ -97,7 +137,7 @@ c_exec.forward()
 ## Show output
 print c_exec.outputs[0].asnumpy()
 
-# Result shows a correlation is performed:
+# Result shows a correlation result:
 #
 #[[[[ 60  56  52]
 #   [ 39  61  66]
@@ -112,10 +152,10 @@ So why are the frameworks implementing it in this way when the math clearly stat
 ### More on the Math.
 
 Lets introduce some notation:
-* $\color{red}{*}$ to denote <span style="color:red"> convolution</span>.  This is implemented using correlation with a flipped kernel.
-* $\color{blue}{\star}$ to denote <span style="color:blue"> correlation</span>.  This is implemented as a sliding dot product.
+* $\color{red}{*}$ to denote <span style="color:red"> convolution</span>.  This is implemented in terms of correlation with a flipped kernel.
+* $\color{blue}{\star}$ to denote <span style="color:blue"> correlation</span>.  This is implemented as sliding dot product.
 
-What is requested when the convolution operator is invoked is identity $\eqref{eq:corrflp}$ but what is actually performed is the RHS of identity $\eqref{eq:corr}$.
+What is requested when the convolution operator is invoked is identity $\eqref{eq:corrflp}$ but what is actually performed is the RHS of identity $\eqref{eq:corr}$ below.
 
 $$
   \begin{align}
@@ -131,7 +171,7 @@ $$
   \end{align}
 $$
 
-Using matrices adds more clarity
+Using actual matrices, the kernels looks like
 
 $$
 K_{\color{blue}{corr}} = 
@@ -141,8 +181,6 @@ K_{\color{blue}{corr}} =
   \color{blue}6 & \color{blue}7 & \color{blue}8  \\\\
  \end{bmatrix}
 $$
-
-is the correlation kernel, then the convolution kernel is derived as
 
 $$
 \begin{align\*}
@@ -156,13 +194,7 @@ K_{\color{red}{conv}} &= flip\big( K_{\color{blue}{corr}} \big) \\\\
 \end{align\*}
 $$
 
-Identity $\eqref{eq:corr}$ is then re-written as 
-
-$$
-I \color{red}{*} K_{\color{red}{conv}} =  I \color{blue}{\star} K_{\color{blue}{corr}}
-$$
-
-when expanded 
+and identity $\eqref{eq:corr}$ expands to 
 
 $$
  \begin{bmatrix}
@@ -191,26 +223,19 @@ $$
  \end{bmatrix}
 $$
 
+which in shorthand is
+
+$$
+I \color{red}{*} K_{\color{red}{conv}} =  I \color{blue}{\star} K_{\color{blue}{corr}}
+$$
 
 
-
-
-
-
-
-scaas
-
-
-
-
-
-
-
-### <span style="color:blue"> Correlation </span>Neural Networks, rather.
+### Correlation Neural Networks, rather.
 
 It turns out that Convolutional Neural Network is a bit of a misnomer, depending on how you think about it.  Two lines of thought:
 
-1. The 
+1. It is implicit in the operators assumption that the kernel be flipped - The training algorithm is learning flipped kernels, so that additional flipping isnt required.
+2. The operator is incorrectly names 
 
 > The convolution operator in ConvNets is not implemented as convolution, but rather, as correlation.  A more appropriate name for ConvNets is infact CorrNet.
 
